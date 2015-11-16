@@ -24,6 +24,10 @@ public class TableExample {
         TableElement tableElement = new TableElement(1, 1)
                 .border(BorderStyle.DASHED)
                 .separator(BorderStyle.DASHED);
+        
+        //设置单元格的左右边框间隔，默认是没有，看起来会有点挤，空间足够时，可以设置为1，看起来清爽
+        tableElement.leftCellPadding(1).rightCellPadding(1);
+        
         //设置header
         tableElement.row(true, fields);
         
@@ -35,7 +39,7 @@ public class TableExample {
             tableElement.
             add(row().
                 add(label("student" + i)).
-                add(label("name" + i)));
+                add(label("" + i)));
         }
         
         //默认输出宽度是80
