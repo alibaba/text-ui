@@ -238,4 +238,16 @@ public class RenderUtil {
         return result.toString();
     }
 
+    /**
+     * 清除字符串的里的所有的ansi颜色等字符
+     * 
+     * @param str
+     * @return
+     */
+    static public String ansiToPlainText(String str) {
+        if (str != null) {
+            str = str.replaceAll("\u001B\\[[;\\d]*m", "");
+        }
+        return str;
+    }
 }
