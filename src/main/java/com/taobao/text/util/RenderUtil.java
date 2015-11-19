@@ -65,8 +65,8 @@ public class RenderUtil {
         if (fieldMethods.isEmpty()) {
             return "NULL";
         }
-        
-        //对fields排序
+
+        // 对fields排序
         Collections.sort(fields);
 
         // 对method排序
@@ -123,10 +123,8 @@ public class RenderUtil {
     }
 
     private static <O> String render(List<O> list, List<String> fields, List<Method> fieldMethods) {
-        TableElement tableElement = new TableElement()
-        .border(BorderStyle.DASHED)
-        .separator(BorderStyle.DASHED);
-        
+        TableElement tableElement = new TableElement().border(BorderStyle.DASHED).separator(BorderStyle.DASHED);
+
         tableElement.row(true, fields.toArray(new String[0]));
 
         for (O object : list) {
@@ -249,5 +247,18 @@ public class RenderUtil {
             str = str.replaceAll("\u001B\\[[;\\d]*m", "");
         }
         return str;
+    }
+
+    /**
+     * 返回ansi的清屏字符串
+     * 
+     * @return
+     */
+    static public String cls() {
+        /**
+         * \033是控制字符，\033[H表示把光标移到(0,0)，\033[2J表示清屏
+         * 
+         */
+        return "\033[H\033[2J";
     }
 }
