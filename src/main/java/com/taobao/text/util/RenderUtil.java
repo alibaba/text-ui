@@ -6,12 +6,15 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
 import com.taobao.text.Format;
 import com.taobao.text.LineReader;
+import com.taobao.text.LineRenderer;
 import com.taobao.text.RenderAppendable;
+import com.taobao.text.Renderer;
 import com.taobao.text.ScreenBuffer;
 import com.taobao.text.ScreenContext;
 import com.taobao.text.Screenable;
@@ -168,6 +171,44 @@ public class RenderUtil {
      */
     static public String render(final Element element, final int width) {
         return render(element, width, defaultHeight);
+    }
+    
+    /**
+     * 渲染Iterator对象，用户自定义实现Renderer类
+     * 
+     * @param iter
+     * @param clazz
+     * @return
+     */
+    static public <E> String render(Iterator<E> iter, Renderer<E> renderer) {
+        return render(iter, renderer, defaultWidth, defaultHeight);
+    }
+
+    /**
+     * 渲染Iterator对象，用户自定义实现Renderer类
+     * 
+     * @param iter
+     * @param clazz
+     * @param width
+     * @return
+     */
+    static public <E> String render(Iterator<E> iter, Renderer<E> renderer, int width) {
+        return render(iter, renderer, width, defaultHeight);
+    }
+
+    /**
+     * 渲染Iterator对象，用户自定义实现Renderer类
+     * 
+     * @param iter
+     * @param clazz
+     * @param width
+     * @param height
+     * @return
+     */
+    static public <E> String render(Iterator<E> iter, Renderer<E> renderer, int width, int height) {
+        LineRenderer lineRenderer = renderer.renderer(iter);
+        LineReader reader = lineRenderer.reader(width, height);
+        return render(reader, width, height);
     }
 
     /**
