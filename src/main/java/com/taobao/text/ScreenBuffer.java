@@ -67,6 +67,10 @@ public class ScreenBuffer implements Iterable<Object>, Serializable, Screenable 
         format.write((CharSequence)chunk, appendable);
       }
     }
+    //如果next是rest的话，要恢复style
+    if(this.next != null && next.equals(Style.reset)){
+        format.write(next, appendable);
+    }
     format.end(appendable);
   }
 
