@@ -124,7 +124,33 @@ Element.label("xxx").style(Composite.style(Color.blue));
 ```java
 //设置为粗体，背景颜色是红色
 Element.label("xxx").style(Decoration.bold.bg(Color.red));
+```
 
+## 语法高亮功能
+支持对多种语法的语法高亮。默认是java语言，可以传递不同的语言参数。
+
+```java
+public class HighlightExample {
+
+    public static void main(String[] args) {
+
+        String code = "int a = 123; \nString s = \"sssss\";";
+
+        System.out.println(LangRenderUtil.render(code, LangRenderUtil.java));
+    }
+
+}
+```
+
+需要增加依赖
+
+```xml
+		<dependency>
+			<groupId>com.fifesoft</groupId>
+			<artifactId>rsyntaxtextarea</artifactId>
+			<version>2.5.8</version>
+		</dependency>
+```
 
 
 更多的例子请参考test下面的example。
