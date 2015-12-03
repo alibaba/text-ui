@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<RSyntaxTheme version="1.0">
+   
+   <!-- Syntax tokens. -->
+   <tokenStyles>
+<!--       <style token="IDENTIFIER" fg="red"/> -->
+      <style token="RESERVED_WORD" fg="blue" bold="true"/>
+      <style token="RESERVED_WORD_2" fg="blue" bold="true"/>
+      <style token="ANNOTATION" fg="cyan"/>
+      <style token="COMMENT_DOCUMENTATION" fg="green"/>
+      <style token="COMMENT_EOL" fg="green"/>
+      <style token="COMMENT_MULTILINE" fg="green"/>
+      <style token="COMMENT_KEYWORD" fg="green" bold="true"/>
+      <style token="COMMENT_MARKUP" fg="green"/>
+      <style token="DATA_TYPE" fg="cyan" bold="true"/>
+      <style token="FUNCTION" fg="yellow"/>
+      <style token="LITERAL_BOOLEAN" fg="magenta" bold="true"/>
+      <style token="LITERAL_NUMBER_DECIMAL_INT" fg="magenta"/>
+      <style token="LITERAL_NUMBER_FLOAT" fg="magenta"/>
+      <style token="LITERAL_NUMBER_HEXADECIMAL" fg="magenta"/>
+      <style token="LITERAL_STRING_DOUBLE_QUOTE" fg="magenta"/>
+      <style token="LITERAL_CHAR" fg="magenta"/>
+      <style token="LITERAL_BACKQUOTE" fg="magenta"/>
+      <style token="MARKUP_TAG_DELIMITER" fg="cyan"/>
+      <style token="MARKUP_TAG_NAME" fg="cyan"/>
+      <style token="MARKUP_TAG_ATTRIBUTE" fg="magenta"/>
+      <style token="MARKUP_TAG_ATTRIBUTE_VALUE" fg="blue" italic="true"/>
+      <style token="MARKUP_COMMENT" fg="green"/>
+<!--       <style token="MARKUP_DTD" fg="black"/> -->
+<!--       <style token="MARKUP_PROCESSING_INSTRUCTION" fg="black"/> -->
+<!--       <style token="MARKUP_CDATA" fg="black"/> -->
+<!--       <style token="MARKUP_CDATA_DELIMITER" fg="black"/> -->
+<!--       <style token="MARKUP_ENTITY_REFERENCE" fg="black"/> -->
+<!--       <style token="OPERATOR" fg="black"/> -->
+<!--       <style token="PREPROCESSOR" fg="black"/> -->
+      <style token="REGEX" fg="blue"/>
+<!--       <style token="SEPARATOR" fg="red"/> -->
+      <style token="VARIABLE" fg="blue" bold="true"/>
+<!--       <style token="WHITESPACE" fg="black"/> -->
+      
+      <style token="ERROR_IDENTIFIER" fg="black" bg="red"/>
+      <style token="ERROR_NUMBER_FORMAT" fg="black" bg="red"/>
+      <style token="ERROR_STRING_DOUBLE" fg="black" bg="red"/>
+      <style token="ERROR_CHAR" fg="black" bg="red"/>
+   </tokenStyles>
+
+</RSyntaxTheme>
