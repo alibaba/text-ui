@@ -159,20 +159,9 @@ public class RenderUtil {
      * @return
      */
     static public String render(final Element element) {
-        return render(element, defaultWidth, defaultHeight);
+        return render(element, defaultWidth);
     }
 
-    /**
-     * 把Element 渲染为String
-     * 
-     * @param element
-     * @param width
-     * @return
-     */
-    static public String render(final Element element, final int width) {
-        return render(element, width, defaultHeight);
-    }
-    
     /**
      * 渲染Iterator对象，用户自定义实现Renderer类
      * 
@@ -193,7 +182,9 @@ public class RenderUtil {
      * @return
      */
     static public <E> String render(Iterator<E> iter, Renderer<E> renderer, int width) {
-        return render(iter, renderer, width, defaultHeight);
+        LineRenderer lineRenderer = renderer.renderer(iter);
+        LineReader reader = lineRenderer.reader(width);
+        return render(reader, width, defaultHeight);
     }
 
     /**
@@ -212,7 +203,20 @@ public class RenderUtil {
     }
 
     /**
-     * 把Element 渲染为String
+     * 把Element 渲染为String，高度是Element自然输出的高度
+     * 
+     * @param element
+     * @param width
+     * @return
+     */
+    static public String render(final Element element, final int width) {
+        LineReader renderer = element.renderer().reader(width);
+        return render(renderer, width, defaultHeight);
+    }
+
+    /**
+     * 把Element
+     * 渲染为String，当Element输出的高度小于height参数时，会填充空行。当Element高度大于height时，会截断。
      * 
      * @param element
      * @param width
@@ -220,7 +224,7 @@ public class RenderUtil {
      * @return
      */
     static public String render(final Element element, final int width, final int height) {
-        LineReader renderer = element.renderer().reader(width);
+        LineReader renderer = element.renderer().reader(width, height);
         return render(renderer, width, height);
     }
 
