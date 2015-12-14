@@ -23,6 +23,7 @@ import com.taobao.text.Color;
 import com.taobao.text.Decoration;
 import com.taobao.text.LineRenderer;
 import com.taobao.text.Renderer;
+import com.taobao.text.Style;
 import com.taobao.text.ui.LabelElement;
 import com.taobao.text.ui.Overflow;
 import com.taobao.text.ui.RowElement;
@@ -153,6 +154,11 @@ public class ThreadRenderer extends Renderer<Thread> {
       String time = min + ":" + (seconds % 60);
       long cpu = cpus.get(thread);
       ThreadGroup group = thread.getThreadGroup();
+      
+      LabelElement daemonLabel = new LabelElement(thread.isDaemon());
+      if (!thread.isDaemon()) {
+          daemonLabel.setStyle(Style.style(Color.magenta));
+      }
       table.row(
           new LabelElement(thread.getId()),
           new LabelElement(thread.getName()),
@@ -162,7 +168,7 @@ public class ThreadRenderer extends Renderer<Thread> {
           new LabelElement(cpu),
           new LabelElement(time),
           new LabelElement(thread.isInterrupted()),
-          new LabelElement(thread.isDaemon())
+          daemonLabel
       );
     }
 
