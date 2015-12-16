@@ -170,7 +170,7 @@ public class RenderUtil {
      * @return
      */
     static public <E> String render(Iterator<E> iter, Renderer<E> renderer) {
-        return render(iter, renderer, defaultWidth, defaultHeight);
+        return render(iter, renderer, defaultWidth);
     }
 
     /**
