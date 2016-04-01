@@ -53,8 +53,8 @@ public class LabelElement extends Element {
       throw new IllegalArgumentException("No negative min size allowed");
     }
 
-    //
-    String s = String.valueOf(value);
+    //text-ui currently can not process \r, so replace to \n.  @duanling 2016/4/1
+    String s = String.valueOf(value).replaceAll("\\r\\n|\\r", "\n");
 
     // Determine size
     CharSlicer slicer = new CharSlicer(s);
