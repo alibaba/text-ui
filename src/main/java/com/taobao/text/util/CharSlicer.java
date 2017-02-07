@@ -37,26 +37,25 @@ public class CharSlicer {
 
   public Pair<Integer, Integer> size() {
     if (size == null) {
-      size = size(value, 0, 1);
+      size = size(value);
     }
     return size;
   }
 
-  private static Pair<Integer, Integer> size(String s, int index, int height) {
-    if (height < 1) {
-      throw new IllegalArgumentException("A non positive height=" + height + " cannot be accepted");
-    }
-    if (index < s.length()) {
-      int pos = s.indexOf('\n', index);
-      if (pos == -1) {
-        return Pair.of(s.length() - index, height);
-      } else {
-        Pair<Integer, Integer> ret = size(s, pos + 1, height + 1);
-        return new Pair<Integer, Integer>(Math.max(pos - index, ret.getFirst()), ret.getSecond());
+  private static Pair<Integer, Integer> size(String s) {
+    int height = 1;
+    int maxWidth = 0;
+    int lastLineBegin = -1;
+    for (int i = 0; i < s.length(); i++) {
+      if (s.charAt(i) == '\n') {
+        height++;
+        if (i - lastLineBegin > maxWidth) {
+          maxWidth = i - lastLineBegin - 1;
+        }
+        lastLineBegin = i;
       }
-    } else {
-      return Pair.of(0, height);
     }
+    return Pair.of(maxWidth, height);
   }
 
   public Pair<Integer, Integer>[] lines(final int width) {
