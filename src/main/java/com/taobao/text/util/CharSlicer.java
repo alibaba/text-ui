@@ -55,6 +55,10 @@ public class CharSlicer {
         lastLineBegin = i;
       }
     }
+    if (lastLineBegin < 0) {
+      // the input string has no new line
+      maxWidth = s.length();
+    }
     return Pair.of(maxWidth, height);
   }
 
