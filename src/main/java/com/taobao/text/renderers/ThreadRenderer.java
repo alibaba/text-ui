@@ -54,6 +54,16 @@ public class ThreadRenderer extends Renderer<Thread> {
     colorMapping.put(Thread.State.TERMINATED, Color.blue);
   }
 
+  private long sampleInterval;
+
+  public ThreadRenderer() {
+    this.sampleInterval = 100;
+  }
+
+  public ThreadRenderer(long sampleInterval) {
+    this.sampleInterval = sampleInterval;
+  }
+
   @Override
   public Class<Thread> getType() {
     return Thread.class;
@@ -76,8 +86,7 @@ public class ThreadRenderer extends Renderer<Thread> {
     }
 
     try {
-      // Sleep 100ms
-      Thread.sleep(100);
+      Thread.sleep(sampleInterval);
     }
     catch (InterruptedException e) {
       Thread.currentThread().interrupt();
