@@ -181,6 +181,13 @@ public abstract class Layout {
       while (totalLength > length && index >= 0) {
         int delta = totalLength - length;
         int bar = actualLengths[index] - minLengths[index];
+
+        int ave = 0;
+        for (int i = 0; i < actualLengths.length; i++) {
+          ave += actualLengths[i];
+        }
+        ave /= actualLengths.length;
+
         if (delta <= bar) {
           // We are done
           totalLength = length;
@@ -192,18 +199,21 @@ public abstract class Layout {
               foo++;
             }
           }
-          totalLength -= foo;
-          ret[index] = 0;
+
+          if (foo > ave) {
+            float ratio = length / (totalLength * 1.0f);
+            int afterCut = (int) (ratio * foo);
+            ret[index] = afterCut;
+            totalLength -= (foo - afterCut);
+          }
+
           index--;
         }
       }
 
       //
       if (totalLength > 0) {
-        if (index == minLengths.length - 1) {
-          return ret;
-        } else {
-          return Arrays.copyOf(ret, index + 1);
+        return ret;
         }
       } else {
         return null;
