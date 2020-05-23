@@ -1,3 +1,4 @@
+
 /*
  * Copyright (C) 2012 eXo Platform SAS.
  *
@@ -177,10 +178,7 @@ public abstract class Layout {
       }
 
       //
-      int index = minLengths.length - 1;
-      while (totalLength > length && index >= 0) {
-        int delta = totalLength - length;
-        int bar = actualLengths[index] - minLengths[index];
+      if(totalLength > length) {
 
         int ave = 0;
         for (int i = 0; i < actualLengths.length; i++) {
@@ -188,46 +186,49 @@ public abstract class Layout {
         }
         ave /= actualLengths.length;
 
-        if (delta <= bar) {
-          // We are done
-          totalLength = length;
-          ret[index] -= delta;
-        } else {
-          int foo = actualLengths[index];
-          if (spaced) {
-            if (index > 0) {
-              foo++;
+        int index = minLengths.length - 1;
+        while (totalLength > length && index >= 0) {
+          int delta = totalLength - length;
+          int bar = actualLengths[index] - minLengths[index];
+
+          if (delta <= bar) {
+            // We are done
+            totalLength = length;
+            ret[index] -= delta;
+          } else {
+            int foo = actualLengths[index];
+            if (spaced) {
+              if (index > 0) {
+                foo++;
+              }
             }
-          }
+            // cut
+            if (foo > ave) {
+              float ratio = length / (totalLength * 1.0f);
+              int afterCut = (int) (ratio * foo);
+              ret[index] = afterCut;
+              totalLength -= (foo - afterCut);
+            }
 
-          if (foo > ave) {
-            float ratio = length / (totalLength * 1.0f);
-            int afterCut = (int) (ratio * foo);
-            ret[index] = afterCut;
-            totalLength -= (foo - afterCut);
+            index--;
           }
-
-          index--;
         }
       }
 
       //
       if (totalLength > 0) {
         return ret;
-        }
       } else {
         return null;
       }
     }
   };
 /*
-
   public static final ColumnLayout DISTRIBUTED = new ColumnLayout() {
     @Override
     public int[] compute(Border border, int width, int[] widths, int[] minWidths) {
       int index = 0;
       while (true) {
-
         // Compute now the number of chars
         boolean done = false;
         int total = 0;
@@ -245,15 +246,12 @@ public abstract class Layout {
             }
           }
         }
-
         // It's not valid
         if (total == 0) {
           return null;
         }
-
         //
         int delta = width - total;
-
         //
         if (delta == 0) {
           break;
@@ -267,7 +265,6 @@ public abstract class Layout {
           }
           index = (index + 1) % widths.length;
         } else {
-
           // First try to remove from a column above min size
           int found = -1;
           for (int i = widths.length - 1;i >= 0;i--) {
@@ -280,7 +277,6 @@ public abstract class Layout {
               break;
             }
           }
-
           // If we haven't found a victim then we consider removing a column
           if (found == -1) {
             for (int i = widths.length - 1;i >= 0;i--) {
@@ -290,7 +286,6 @@ public abstract class Layout {
               }
             }
           }
-
           // We couldn't find any solution we give up
           if (found == -1) {
             break;
@@ -299,7 +294,6 @@ public abstract class Layout {
           }
         }
       }
-
       //
       return widths;
     }
