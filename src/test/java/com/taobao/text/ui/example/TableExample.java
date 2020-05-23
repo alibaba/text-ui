@@ -13,12 +13,15 @@ import com.taobao.text.ui.Overflow;
 import com.taobao.text.ui.TableElement;
 import com.taobao.text.util.RenderUtil;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 public class TableExample {
 
     @Test
     public void test1() {
         // header定义
-        String[] fields = { "name", "age" };
+        String[] fields = {"name", "age"};
 
         // 设置两列的比例是1:1，如果不设置的话，列宽是自动按元素最长的处理。
         // 设置table的外部边框，默认是没有外边框
@@ -44,5 +47,76 @@ public class TableExample {
 
         // 默认输出宽度是80
         System.err.println(RenderUtil.render(tableElement));
+    }
+
+
+    @Test
+    public void testTableWithLabel() {
+        TableElement table = new TableElement().leftCellPadding(1).rightCellPadding(1);
+        table.row(true, label("timestamp").style(Decoration.bold.bold()),
+                label("class").style(Decoration.bold.bold()),
+                label("method").style(Decoration.bold.bold()),
+                label("total").style(Decoration.bold.bold()),
+                label("success").style(Decoration.bold.bold()),
+                label("fail").style(Decoration.bold.bold()),
+                label("avg-rt(ms)").style(Decoration.bold.bold()),
+                label("fail-rate").style(Decoration.bold.bold()));
+        table.row(
+                new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()),
+                "com.taobao.text.ui.example,IAmToooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooolong",
+                "SuperLooooooooooooooooooooooooooooooooooooooooogMethod",
+                "10000",
+                "10000",
+                "99999",
+                "0.01",
+                "0.99%"
+        );
+        System.out.println(RenderUtil.render(table));
+    }
+
+    @Test
+    public void testTableInTable() {
+        TableElement table = new TableElement().leftCellPadding(1).rightCellPadding(1);
+        table.row(true, label("timestamp").style(Decoration.bold.bold()),
+                label("class").style(Decoration.bold.bold()),
+                label("method").style(Decoration.bold.bold()),
+                label("total").style(Decoration.bold.bold()),
+                label("success").style(Decoration.bold.bold()),
+                label("fail").style(Decoration.bold.bold()),
+                label("avg-rt(ms)").style(Decoration.bold.bold()),
+                label("fail-rate").style(Decoration.bold.bold()));
+        table.row(
+                new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()),
+                "com.taobao.text.ui.example,IAmlong",
+                "SuperLooooooooooooooooooooooooooooooooooooooooogMethod",
+                "10000",
+                "10000",
+                "99999",
+                "0.01",
+                "0.99%"
+        );
+
+
+        TableElement table2 = new TableElement().leftCellPadding(1).rightCellPadding(1);
+        table2.row(true, label("timestamp").style(Decoration.bold.bold()),
+                label("class").style(Decoration.bold.bold()),
+                label("method").style(Decoration.bold.bold()),
+                label("total").style(Decoration.bold.bold()),
+                label("success").style(Decoration.bold.bold()),
+                label("fail").style(Decoration.bold.bold()),
+                label("avg-rt(ms)").style(Decoration.bold.bold()),
+                label("fail-rate").style(Decoration.bold.bold()));
+        table2.row(
+                new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()),
+                "com.taobao.text.ui.example,IAmlong",
+                "SuperLooooooooooooooooooooooooooooooooooooooooogMethod",
+                "10000",
+                "10000",
+                "99999",
+                "0.01",
+                "0.99%"
+        );
+        table.row("Hello World").row(table2).row(" Hello, Alibaba MiddleWare ");
+        System.out.println(RenderUtil.render(table));
     }
 }
