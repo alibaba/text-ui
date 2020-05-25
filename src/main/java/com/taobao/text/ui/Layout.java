@@ -216,8 +216,10 @@ public abstract class Layout {
       }
 
       //
-      if (totalLength > 0) {
+      if (totalLength > 0 && totalLength <= length) {
         return ret;
+      } else if (totalLength > length) {
+        return Arrays.copyOf(ret, length);
       } else {
         return null;
       }
