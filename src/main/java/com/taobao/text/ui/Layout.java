@@ -215,11 +215,20 @@ public abstract class Layout {
         }
       }
 
-      //
+      //  totalLength < tty length
       if (totalLength > 0 && totalLength <= length) {
         return ret;
       } else if (totalLength > length) {
-        return Arrays.copyOf(ret, length);
+        // when totalLength still more than tty length, cut Array
+        // prevent ArrayOutoffBounds
+        int len = 0;
+        for(int i = 0; i < actualLengths.length; i++){
+          len += actualLengths[i];
+          if(len > length){
+            break;
+          }
+        }
+        return Arrays.copyOf(ret, len);
       } else {
         return null;
       }
