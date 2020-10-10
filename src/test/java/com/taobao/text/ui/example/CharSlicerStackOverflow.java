@@ -29,6 +29,26 @@ public class CharSlicerStackOverflow {
     }
 
     @Test
+    public void testLines() {
+        StringBuilder sb = new StringBuilder();
+        int lines = 10000;
+        int maxLength = 0;
+        for (int i = 0; i < lines; i++) {
+            int length = (int)(Math.random() * 100);
+            if (length > maxLength) maxLength = length;
+            for (int j = 0; j < length; j++) {
+                sb.append("a");
+            }
+            sb.append("\n");
+        }
+
+        CharSlicer charSlicer = new CharSlicer(sb.toString());
+        Pair<Integer, Integer>[] strLines = charSlicer.lines(maxLength);
+        Assert.assertEquals(lines, strLines.length);
+        Assert.assertNotNull(strLines[strLines.length-1]);
+    }
+
+    @Test
     public void testSimpleString() {
         CharSlicer charSlicer = new CharSlicer("abcdefghigk");
         Assert.assertEquals(charSlicer.size().getFirst().intValue(), "abcdefghigk".length());
