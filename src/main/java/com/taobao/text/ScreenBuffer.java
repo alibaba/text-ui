@@ -63,6 +63,8 @@ public class ScreenBuffer implements Iterable<Object>, Serializable, Screenable 
         format.write((Style)chunk, appendable);
       } else if (chunk instanceof CLS) {
         format.cls(appendable);
+      } else if (chunk instanceof Character) {
+        format.write(((Character) chunk).charValue(), appendable);
       } else {
         format.write((CharSequence)chunk, appendable);
       }
@@ -99,8 +101,16 @@ public class ScreenBuffer implements Iterable<Object>, Serializable, Screenable 
   }
 
   @Override
-  public ScreenBuffer append(char c) throws IOException {
-    return append(Character.toString(c));
+  public ScreenBuffer append(char c) {
+    if (!next.equals(current)) {
+      if (!Style.style().equals(next)) {
+        chunks.addLast(next);
+      }
+      current = next;
+      next = Style.style();
+    }
+    chunks.addLast(c);
+    return this;
   }
 
   public ScreenBuffer append(CharSequence s) {
@@ -134,6 +144,8 @@ public class ScreenBuffer implements Iterable<Object>, Serializable, Screenable 
           out.cls();
         } else if (chunk instanceof CharSequence) {
           out.append((CharSequence)chunk);
+        } else if (chunk instanceof Character) {
+          out.append((Character)chunk);
         } else {
           out.append((Style)chunk);
         }
@@ -165,6 +177,8 @@ public class ScreenBuffer implements Iterable<Object>, Serializable, Screenable 
       append((Style)o);
     } else if (o instanceof CharSequence){
       append(((CharSequence)o));
+    } else if (o instanceof Character){
+      append(((Character) o).charValue());
     } else if (o instanceof CLS) {
       cls();
     } else {

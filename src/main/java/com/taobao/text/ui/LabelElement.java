@@ -23,6 +23,7 @@ import com.taobao.text.LineRenderer;
 import com.taobao.text.Style;
 import com.taobao.text.util.CharSlicer;
 import com.taobao.text.util.Pair;
+import com.taobao.text.util.Utils;
 
 public class LabelElement extends Element {
 
@@ -54,7 +55,9 @@ public class LabelElement extends Element {
     }
 
     //text-ui currently can not process \r, so replace to \n.  @duanling 2016/4/1
-    String s = String.valueOf(value).replaceAll("\\r\\n|\\r", "\n");
+    String s = String.valueOf(value);
+    s = Utils.replace(s, "\\r\\n", "\n");
+    s = Utils.replace(s, "\\r", "\n");
 
     // Determine size
     CharSlicer slicer = new CharSlicer(s);

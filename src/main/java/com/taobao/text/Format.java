@@ -44,6 +44,12 @@ public abstract class Format {
         to.append(s);
       }
     }
+
+    @Override
+    public void write(char c, Appendable to) throws IOException {
+      to.append(c);
+    }
+
     @Override
     public void write(Style style, Appendable to) throws IOException {
     }
@@ -68,6 +74,10 @@ public abstract class Format {
       }
     }
     @Override
+    public void write(char c, Appendable to) throws IOException {
+      to.append(c);
+    }
+    @Override
     public void write(Style style, Appendable to) throws IOException {
       style.writeAnsiTo(to);
     }
@@ -90,27 +100,30 @@ public abstract class Format {
     public void write(CharSequence s, Appendable to) throws IOException {
       if (s.length() > 0) {
         for (int i = 0;i < s.length();i++) {
-          char c = s.charAt(i);
-          switch (c) {
-            case '>':
-              to.append("&gt;");
-              break;
-            case '<':
-              to.append("&lt;");
-              break;
-            case '&':
-              to.append("&amp;");
-              break;
-            case '\'':
-              to.append("&#039;");
-              break;
-            case '"':
-              to.append("&#034;");
-              break;
-            default:
-              to.append(c);
-          }
+          this.write(s.charAt(i), to);
         }
+      }
+    }
+    @Override
+    public void write(char c, Appendable to) throws IOException {
+      switch (c) {
+        case '>':
+          to.append("&gt;");
+          break;
+        case '<':
+          to.append("&lt;");
+          break;
+        case '&':
+          to.append("&amp;");
+          break;
+        case '\'':
+          to.append("&#039;");
+          break;
+        case '"':
+          to.append("&#034;");
+          break;
+        default:
+          to.append(c);
       }
     }
     @Override
@@ -128,6 +141,8 @@ public abstract class Format {
   public abstract void begin(Appendable to) throws IOException;
 
   public abstract void write(CharSequence s, Appendable to) throws IOException;
+
+  public abstract void write(char charValue, Appendable to) throws IOException;
 
   public abstract void write(Style style, Appendable to) throws IOException;
 
