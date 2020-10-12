@@ -63,19 +63,37 @@ public class CharSlicer {
   }
 
   public Pair<Integer, Integer>[] lines(final int width) {
-    return lines(linesIterator(width), 0);
-  }
-
-  private Pair<Integer, Integer>[] lines(Iterator<Pair<Integer, Integer>> i, int count) {
-    Pair<Integer, Integer>[] lines;
-    if (i.hasNext()) {
-      Pair<Integer, Integer> n = i.next();
-      lines = lines(i, count + 1);
-      lines[count] = n;
-    } else {
-      lines = new Pair[count];
+    int count = getLineCount(width);
+    Pair<Integer, Integer>[] lines = new Pair[count];
+    Iterator<Pair<Integer, Integer>> linesIterator = linesIterator(width);
+    for (int i = 0; i < lines.length; i++) {
+      if (linesIterator.hasNext()) {
+        lines[i] = linesIterator.next();
+      }
     }
     return lines;
+  }
+
+  public int getLineCount(int width) {
+    int index = 0;
+    int count = 0;
+    while (index < value.length()) {
+      int pos = value.indexOf('\n', index);
+      int nextIndex;
+      if (pos == -1) {
+        pos = Math.min(index + width, value.length());
+        nextIndex = pos;
+      } else {
+        if (pos <= index + width) {
+          nextIndex = pos + 1;
+        } else {
+          nextIndex = index + width;
+        }
+      }
+      count ++;
+      index = nextIndex;
+    }
+    return count;
   }
 
   public Iterator<Pair<Integer, Integer>> linesIterator(final int width) {
@@ -91,28 +109,21 @@ public class CharSlicer {
       Pair<Integer, Integer> next = null;
 
       public boolean hasNext() {
-        if (next == null) {
-          if (index != Integer.MAX_VALUE) {
-            int pos = value.indexOf('\n', index);
-            int nextIndex;
-            if (pos == -1) {
-              pos = Math.min(index + width, value.length());
-              nextIndex = pos;
+        if (next == null && index < value.length()) {
+          int pos = value.indexOf('\n', index);
+          int nextIndex;
+          if (pos == -1) {
+            pos = Math.min(index + width, value.length());
+            nextIndex = pos;
+          } else {
+            if (pos <= index + width) {
+              nextIndex = pos + 1;
             } else {
-              if (pos <= index + width) {
-                nextIndex = pos + 1;
-              } else {
-                nextIndex = pos = index + width;
-              }
-            }
-            next = Pair.of(index, pos);
-            if (pos < value.length()) {
-              index = nextIndex;
-            } else {
-              // Stop value
-              index = Integer.MAX_VALUE;
+              nextIndex = pos = index + width;
             }
           }
+          next = Pair.of(index, pos);
+          index = nextIndex;
         }
         return next != null;
       }
