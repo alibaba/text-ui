@@ -36,7 +36,7 @@
 
 	<groupId>com.taobao.text</groupId>
 	<artifactId>text-ui</artifactId>
-	<version>0.0.3-SNAPSHOT</version>
+	<version>0.0.3</version>
 	<packaging>jar</packaging>
 
 	<name>text.ui</name>
