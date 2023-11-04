@@ -109,10 +109,11 @@ public abstract class Layout {
         // Compute the length of each cell
         int[] ret = new int[i];
         for (int j = 0;j < i;j++) {
-          int w = totalLength * weights[j];
-          if (w < minLengths[j] * totalWeight) {
-            ret = null;
-            break;
+          final int w = totalLength * weights[j];
+          final int minWidth = minLengths[j] * totalWeight;
+          if (w < minWidth) {
+            ret[j] = minWidth;
+            continue;
           } else {
             ret[j] = w;
           }

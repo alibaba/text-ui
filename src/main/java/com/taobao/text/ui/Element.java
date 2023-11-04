@@ -72,4 +72,8 @@ public abstract class Element {
   public static LabelElement label(String value) {
     return new LabelElement(value);
   }
+
+  public static LabelElement label(String value,int minWidth) {
+    return new LabelElement(value, minWidth);
+  }
 }
