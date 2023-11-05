@@ -49,7 +49,7 @@ public class LabelElement extends Element {
    * @param minWidth the label minimum width
    * @throws IllegalArgumentException if the minimum width is negative
    */
-  public LabelElement(Object value, int minWidth) throws IllegalArgumentException {
+  public LabelElement(Object value, int minWidth, boolean forceMinWidth) throws IllegalArgumentException {
     if (minWidth < 0) {
       throw new IllegalArgumentException("No negative min size allowed");
     }
@@ -65,7 +65,8 @@ public class LabelElement extends Element {
 
     //
     this.value = s;
-    this.minWidth = Math.min(size.getFirst(), minWidth);
+    this.minWidth = forceMinWidth ? minWidth :
+      minWidth == 0 ? size.getFirst() : Math.min(size.getFirst(), minWidth);
     this.actualWidth = size.getFirst();
     this.actualHeight = size.getSecond();
     this.slicer = slicer;
@@ -73,6 +74,10 @@ public class LabelElement extends Element {
 
   public LabelElement(String value) {
     this((Object)value);
+  }
+
+  public LabelElement(Object value, int minWidth) throws IllegalArgumentException {
+    this(value, minWidth, false);
   }
 
   public LabelElement(String value, int minWidth) {
