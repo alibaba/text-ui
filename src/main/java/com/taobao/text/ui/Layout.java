@@ -89,77 +89,68 @@ public abstract class Layout {
     int[] compute(boolean spaced, int length, int[] actualLengths, int[] minLengths) {
 
       //
-      int count = Math.min(actualLengths.length, weights.length);
+      final int count = Math.min(actualLengths.length, weights.length);
 
-      //
-      for (int i = count;i > 0;i--) {
-
-        //
-        int totalLength = length;
-        int totalWeight = 0;
-        for (int j = 0;j < i;j++) {
-          totalWeight += weights[j];
-          if (spaced) {
-            if (j > 0) {
-              totalLength--;
-            }
+      int totalLength = length;
+      int totalWeight = 0;
+      int totalMinLength = 0; //minLength合计
+      for (int j = 0;j < count;j++) {
+        totalWeight += weights[j];
+        if (spaced) {
+          if (j > 0) {
+            totalLength--;
           }
         }
-
-        // Compute the length of each cell
-        int[] ret = new int[i];
-        for (int j = 0;j < i;j++) {
-          final int w = totalLength * weights[j];
-          final int minWidth = minLengths[j] * totalWeight;
-          if (w < minWidth) {
-            ret[j] = minWidth;
-            continue;
-          } else {
-            ret[j] = w;
-          }
-        }
-
-        //
-        if (ret != null) {
-          // Error based scaling inspired from Brensenham algorithm:
-          // => sum of the weights == length
-          // => minimize error
-          // for instance with "foo","bar" scaled to 11 chars
-          // using floor + division gives "foobar_____"
-          // this methods gives           "foo_bar____"
-          int err = 0;
-          for (int j = 0;j < ret.length;j++) {
-
-            // Compute base value
-            int value = ret[j] / totalWeight;
-
-            // Lower value
-            int lower = value * totalWeight;
-            int errLower = err + ret[j] - lower;
-
-            // Upper value
-            int upper = lower + totalWeight;
-            int errUpper = err + ret[j] - upper;
-
-            // We choose between lower/upper according to the accumulated error
-            // and we propagate the error
-            if (Math.abs(errLower) < Math.abs(errUpper)) {
-              ret[j] = value;
-              err = errLower;
-            } else {
-              ret[j] = value + 1;
-              err = errUpper;
-            }
-          }
-          return ret;
-        }
+        totalMinLength += minLengths[j];
       }
 
-      //
-      return null;
+      int maxCol = 0;
+      int maxColLength = 0;
+      int usedLength = 0; // 已使用的长度
+      final int[] ret = new int[count];
+      //minLength 优先
+      for (int j = 0;j < count;j++) {
+        int w = totalLength * weights[j] /totalWeight;
+        if (w > minLengths[j]) {
+           continue;
+        } 
+        if (w == 0) {
+          w = 1;
+        }
+        //minLength 按比例(minLength权重)缩小
+        final int w2 =  totalLength *  minLengths[j] / totalMinLength; 
+        if (w2 < minLengths[j]) {
+          ret[j] = w2 == 0 ? 1 : w2;
+        } else {
+          ret [j] = minLengths[j];
+        }
+        if (ret[j] > maxColLength) {
+          maxColLength = ret[j];
+          maxCol = j;
+        }
+        usedLength += ret[j];
+      }
+
+      // 剩下长度， 按权重分配
+      final int remainTotal = totalLength - usedLength;
+      for (int j = 0;j < count;j++) {
+        if (ret[j] != 0) {
+          continue;
+        }
+        final int w = remainTotal * weights[j] /totalWeight;
+        ret[j] = w == 0 ? 1 : w; 
+        usedLength += ret[j];
+        if (ret[j] > maxColLength) {
+          maxColLength = ret[j];
+          maxCol = j;
+        }
+      }
+      if (usedLength < totalLength) { //最后剩下的补给最长的一列
+        ret[maxCol] += (totalLength - usedLength);
+      }
+      return ret;
     }
   }
-
   private static final Layout RTL = new Layout() {
 
     @Override
